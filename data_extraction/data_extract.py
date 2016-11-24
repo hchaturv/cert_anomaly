@@ -44,43 +44,43 @@ print "0. Starting %s" % strftime("%Y-%m-%d %H:%M:%S", gmtime())
 if os.path.isfile(SQLDB):
     os.remove(SQLDB)
 
-# Setup the database
-query = open(SQLFILE, 'r').read()
-sqlite3.complete_statement(query)
-conn = sqlite3.connect(SQLDB)
-with conn:
-    cur = conn.cursor()
-    try:
-        # Create the database
-        cur.executescript(query)
-        print "1. Database %s created." % SQLDB
-        res = None
+def getData(dom)
+    # Setup the database
+    query = open(SQLFILE, 'r').read()
+    sqlite3.complete_statement(query)
+    conn = sqlite3.connect(SQLDB)
+    with conn:
+        cur = conn.cursor()
+        try:
+            # Create the database
+            cur.executescript(query)
+            print "1. Database %s created." % SQLDB
+            res = None
 
-        # Contact the API
-        current_page = 1
-        fields = [ "parsed.fingerprint_sha256", "parsed.extensions.subject_alt_name.dns_names", "parsed.issuer_dn", "parsed.subject_dn", "parsed.signature_algorithm.name","parsed.signature.self_signed", "parsed.subject_key_info.key_algorithm.name","parsed.validity.start","parsed.validity.length","parsed.extensions.subject_alt_name.ip_addresses","parsed.extensions.subject_alt_name.directory_names.country","parsed.extensions.key_usage.encipher_only","parsed.extensions.key_usage.certificate_sign","parsed.extensions.key_usage.key_encipherment","parsed.extensions.key_usage.digital_signature", "parsed.extensions.key_usage.content_commitment","parsed.extensions.key_usage.decipher_only","parsed.extensions.key_usage.key_agreement","parsed.extensions.key_usage.data_encipherment"]
-        data = { 'query': censys_queries[0], 'page': current_page, 'fields': fields}
-        data = json.dumps(data)
-        print "This is the json i am sending: %s " %data
-        res = requests.post(API_URL + API_INDEX, data=data, auth=(UID,SECRET))
-        print "Result code is : %s" %res
+            # Contact the API
+            current_page = 1
+            fields = [ "parsed.fingerprint_sha256", "parsed.extensions.subject_alt_name.dns_names", "parsed.issuer_dn", "parsed.subject_dn", "parsed.signature_algorithm.name","parsed.signature.self_signed", "parsed.subject_key_info.key_algorithm.name","parsed.validity.start","parsed.validity.length","parsed.extensions.subject_alt_name.ip_addresses","parsed.extensions.subject_alt_name.directory_names.country","parsed.extensions.key_usage.encipher_only","parsed.extensions.key_usage.certificate_sign","parsed.extensions.key_usage.key_encipherment","parsed.extensions.key_usage.digital_signature", "parsed.extensions.key_usage.content_commitment","parsed.extensions.key_usage.decipher_only","parsed.extensions.key_usage.key_agreement","parsed.extensions.key_usage.data_encipherment"]
+            data = { 'query': dom, 'page': current_page, 'fields': fields}
+            data = json.dumps(data)
+            print "This is the json i am sending: %s " %data
+            res = requests.post(API_URL + API_INDEX, data=data, auth=(UID,SECRET))
+            print "Result code is : %s" %res
 
-        # Check if we get a good reply
-        if res.status_code != 200:
-            print "error occurred: %s" % res.json()["error"]
-            sys.exit(1)
+            # Check if we get a good reply
+            if res.status_code != 200:
+                print "error occurred: %s" % res.json()["error"]
+                sys.exit(1)
 
-        print "2. Received results for query %s" % censys_queries
-        metadata_pages = res.json()["metadata"]["pages"]
-        metadata_count = res.json()["metadata"]["count"]
+            print "2. Received results for query %s" % censys_queries
+            metadata_pages = res.json()["metadata"]["pages"]
+            metadata_count = res.json()["metadata"]["count"]
 
-        print "3. Got %s results in %s pages." % (metadata_count, metadata_pages)
+            print "3. Got %s results in %s pages." % (metadata_count, metadata_pages)
 
-        for i in range(len(censys_queries)):
             while current_page <= metadata_pages:
                 #while current_page <= 1:
                 if res is None:
-                    data = { 'query': censys_queries[i], 'page': current_page, 'fields': fields}
+                    data = { 'query': dom, 'page': current_page, 'fields': fields}
                     data = json.dumps(data)
                     res = requests.post(API_URL + API_INDEX, data=data, auth=(UID,SECRET))
                     print res
@@ -223,9 +223,12 @@ with conn:
                 current_page += 1
                 res = None
                 time.sleep(2)
-            current_page =0
-        cur.close()
+            cur.close()
 
-    except Exception as e:
-        cur.close()
-        raise
+        except Exception as e:
+            cur.close()
+            raise
+
+for i in range(len(censys_queries)):
+    print "++++++++++++++++++++++++++++++NEW_DOMAIN- %s++++++++++++++++++++" %censys_queries[i]
+    getData(censys_queries[i])
