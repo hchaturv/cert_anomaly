@@ -70,17 +70,18 @@ with conn:
             print "error occurred: %s" % res.json()["error"]
             sys.exit(1)
 
-        print "2. Received results for query %s" % censys_query
+        print "2. Received results for query %s" % censys_queries
         metadata_pages = res.json()["metadata"]["pages"]
         metadata_count = res.json()["metadata"]["count"]
 
         print "3. Got %s results in %s pages." % (metadata_count, metadata_pages)
 
-        for cur in range(len(censys_queries)):
-            while current_page <= metadata_pages:
-                #while current_page <= 1:
+        for i in range(len(censys_queries)):
+            #while current_page <= metadata_pages:
+            print "++++++++++++++++++++++NEW DOMAIN+++++++++++++++++++++%s" %censys_queries[i]
+            while current_page <= 1:
                 if res is None:
-                    data = { 'query': censys_queries[cur], 'page': current_page, 'fields': fields}
+                    data = { 'query': censys_queries[i], 'page': current_page, 'fields': fields}
                     data = json.dumps(data)
                     res = requests.post(API_URL + API_INDEX, data=data, auth=(UID,SECRET))
                     print res
