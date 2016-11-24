@@ -83,7 +83,6 @@ def getData(dom,cur):
                     data = json.dumps(data)
                     res = requests.post(API_URL + API_INDEX, data=data, auth=(UID,SECRET))
                     #print res
-                    break
 
                 print "4. Page %s / %s " % (current_page, metadata_pages)
 
