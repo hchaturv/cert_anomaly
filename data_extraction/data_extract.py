@@ -61,9 +61,9 @@ def getData(dom,cur):
             fields = [ "parsed.fingerprint_sha256", "parsed.extensions.subject_alt_name.dns_names", "parsed.issuer_dn", "parsed.subject_dn", "parsed.signature_algorithm.name","parsed.signature.self_signed", "parsed.subject_key_info.key_algorithm.name","parsed.validity.start","parsed.validity.length","parsed.extensions.subject_alt_name.ip_addresses","parsed.extensions.subject_alt_name.directory_names.country","parsed.extensions.key_usage.encipher_only","parsed.extensions.key_usage.certificate_sign","parsed.extensions.key_usage.key_encipherment","parsed.extensions.key_usage.digital_signature", "parsed.extensions.key_usage.content_commitment","parsed.extensions.key_usage.decipher_only","parsed.extensions.key_usage.key_agreement","parsed.extensions.key_usage.data_encipherment"]
             data = { 'query': dom, 'page': current_page, 'fields': fields}
             data = json.dumps(data)
-            print "This is the json i am sending: %s " %data
+            #print "This is the json i am sending: %s " %data
             res = requests.post(API_URL + API_INDEX, data=data, auth=(UID,SECRET))
-            print "Result code is : %s" %res
+            #print "Result code is : %s" %res
 
             # Check if we get a good reply
             if res.status_code != 200:
@@ -82,7 +82,7 @@ def getData(dom,cur):
                     data = { 'query': dom, 'page': current_page, 'fields': fields}
                     data = json.dumps(data)
                     res = requests.post(API_URL + API_INDEX, data=data, auth=(UID,SECRET))
-                    print res
+                    #print res
                     break
 
                 print "4. Page %s / %s " % (current_page, metadata_pages)
@@ -91,7 +91,7 @@ def getData(dom,cur):
                     results = res.json()["results"]
                     # print results
                     for cert in results:
-                        print cert
+                        #print cert
                         if "parsed.extensions.subject_alt_name.dns_names" in cert:
                             dns_names = cert["parsed.extensions.subject_alt_name.dns_names"]
                             dns_names_count = len(dns_names)
