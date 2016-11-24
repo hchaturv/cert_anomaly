@@ -43,16 +43,15 @@ print "0. Starting %s" % strftime("%Y-%m-%d %H:%M:%S", gmtime())
 # Remove any old databases
 if os.path.isfile(SQLDB):
     os.remove(SQLDB)
+#Setup database
 query = open(SQLFILE, 'r').read()
 sqlite3.complete_statement(query)
 conn = sqlite3.connect(SQLDB)
+cur = conn.cursor()
 
 
-def getData(dom,curr)
-    # Setup the database
-
+def getData(dom,cur):
     with conn:
-        cur = conn.cursor()
         try:
 
             res = None
@@ -232,9 +231,8 @@ try:
     # Create the database
     cur.executescript(query)
     print "1. Database %s created." % SQLDB
-
     for i in range(len(censys_queries)):
-        print "++++++++++++++++++++++++++++++NEW_DOMAIN- %s++++++++++++++++++++" %censys_queries[i]
+        print "++++++++++++++++++++++++++++++NEW_DOMAIN- %s ++++++++++++++++++++" %censys_queries[i]
         getData(censys_queries[i],cur)
     cur.close()
 except Exception as e:
