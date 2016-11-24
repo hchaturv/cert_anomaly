@@ -70,7 +70,7 @@ with conn:
             print "error occurred: %s" % res.json()["error"]
             sys.exit(1)
 
-        print "2. Received results for query %s" % censys_query
+        print "2. Received results for query %s" % censys_queries
         metadata_pages = res.json()["metadata"]["pages"]
         metadata_count = res.json()["metadata"]["count"]
 
