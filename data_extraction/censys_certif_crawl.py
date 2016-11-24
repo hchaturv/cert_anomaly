@@ -46,7 +46,7 @@ with conn:
 
         # Contact the API
         current_page = 1
-        fields = [ "parsed.fingerprint_sha256", "parsed.extensions.subject_alt_name.dns_names", "parsed.issuer_dn", "parsed.subject_dn", "parsed.signature_algorithm.name","parsed.signature.self_signed", "parsed.subject_key_info.key_algorithm.name"]
+        fields = [ "parsed.fingerprint_sha256", "parsed.extensions.subject_alt_name.dns_names", "parsed.issuer_dn", "parsed.subject_dn", "parsed.signature_algorithm.name","parsed.signature.self_signed", "parsed.subject_key_info.key_algorithm.name","parsed.validity.start", "parsed.validity.length","parsed.subject.organization","parsed.subject.country","parsed.subject.common_name", "parsed.issuer.country","parsed.issuer.common_name", "parsed.subject_key_info","parsed.extensions.subject_alt_name.ip_addresses","parsed.extensions.subject_alt_name.directory_names.country","parsed.extensions.key_usage"]
         data = { 'query': censys_query, 'page': current_page, 'fields': fields}
         data = json.dumps(data)
         res = requests.post(API_URL + API_INDEX, data=data, auth=(UID,SECRET))
@@ -92,6 +92,17 @@ with conn:
                     sign_algo_name =  cert["parsed.signature_algorithm.name"][0]
                     self_signed = cert["parsed.signature.self_signed"][0]
                     key_algo = cert["parsed.subject_key_info.key_algorithm.name"][0]
+                    start_data = cert["parsd.validity.start"]
+                    validity_length = cert["parsed.validity.length"]
+                    org = cert["parsed.subject.organization"]
+                    common_name = cert["parsed.subject.common_name"]
+                    issuer_org = cert["parsed.issuer.organization"]
+                    issuer_country = cert["parsed.issuer.country"]
+                    issuer_com_name = cert["parsed.issuer.common_name"]
+                    subj_key_info = cert["parsed.subject_key_info"]
+                    ip = cert["parsed.extensions.subject_alt_name.ip_addresses"]
+                    sub_country = cert["parsed.subject.country"]
+                    key_usage = cert["parsed.extensions.key_usage"]
 
 
                     issuer_dn_split = issuer_dn.split(",")
@@ -126,19 +137,19 @@ with conn:
                         elif el[0:3] == "OU=":
                             subject_ou = el[3:]
 
-                    subject_dn_table = [ fingerprint_sha256, subject_dn, dns_names_count, subject_c, subject_ou, subject_o, subject_cn]
-                    cur.execute("INSERT INTO subject_dn VALUES(?, ?, ?, ?, ?, ?, ?)", subject_dn_table)
+                    #subject_dn_table = [ fingerprint_sha256, subject_dn, dns_names_count, subject_c, subject_ou, subject_o, subject_cn]
+                    #cur.execute("INSERT INTO subject_dn VALUES(?, ?, ?, ?, ?, ?, ?)", subject_dn_table)
 
-                    issuer_dn_table = [ fingerprint_sha256, issuer_dn, issuer_c, issuer_ou, issuer_o, issuer_cn]
-                    cur.execute("INSERT INTO issuer_dn VALUES(?, ?, ?, ?, ?, ?)", issuer_dn_table)
+                    #issuer_dn_table = [ fingerprint_sha256, issuer_dn, issuer_c, issuer_ou, issuer_o, issuer_cn]
+                    #cur.execute("INSERT INTO issuer_dn VALUES(?, ?, ?, ?, ?, ?)", issuer_dn_table)
 
-                    cert_data_table = [fingerprint_sha256, subject_dn, subject_c, subject_o, subject_cn, issuer_c, issuer_o, sign_algo_name, self_signed, key_algo]
-                    cur.execute("INSERT INTO cert_data VALUES(?,?,?,?,?,?,?,?,?,?)", cert_data_table)
+                    cert_data_table = [fingerprint_sha256, org, subject_country, common_name, issuer_org, issuer_country, issuer_com_name, sign_algo_name, self_signed, key_algo, start_data, validity_length, subject_key_info,ip, key_usage]
+                    cur.execute("INSERT INTO cert_data VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", cert_data_table)
 
-                    if dns_names is not None:
+                    '''if dns_names is not None:
                         for name in dns_names:
                             dns_names_table = [ fingerprint_sha256, name ]
-                            cur.execute("INSERT INTO dns_names VALUES(?, ?)", dns_names_table)
+                            cur.execute("INSERT INTO dns_names VALUES(?, ?)", dns_names_table)'''
 
                 conn.commit()
                 current_page += 1 

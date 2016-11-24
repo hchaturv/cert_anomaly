@@ -5,7 +5,8 @@ parsed.subject_dn:
 parsed.issuer_dn:
 parsed.serial_number:
 
-Fingerprintparsed.fingerprint_sha256:
+Fingerprint
+parsed.fingerprint_sha256:
 parsed.fingerprint_sha1:
 parsed.fingerprint_md5:
 parsed.spki_subject_fingerprint:
@@ -13,25 +14,27 @@ parsed.tbs_fingerprint:
 parsed.tbs_noct_fingerprint:
 
 Browser
-Validationcurrent_valid_nss:
+Validation
+current_valid_nss:
 was_valid_nss:
 valid_nss:
 parsed.validation_level:
 
 Validity
-Periodparsed.validity.start:
+Period
+parsed.validity.start:useful
 parsed.validity.end:
-parsed.validity.length:
+parsed.validity.length:useful
 
 Subjectparsed.subject.province:
 parsed.subject.province.raw:
-parsed.subject.organization:
+parsed.subject.organization: useful
 parsed.subject.organization.raw:
 parsed.subject.organizational_unit:
 parsed.subject.organizational_unit.raw:
-parsed.subject.country:
+parsed.subject.country: - useful
 parsed.subject.country.raw:
-parsed.subject.common_name:
+parsed.subject.common_name: useful
 parsed.subject.common_name.raw:
 parsed.subject.serial_number:
 parsed.subject.locality:
@@ -44,13 +47,13 @@ parsed.subject.postal_code:
 
 Issuerparsed.issuer.province:
 parsed.issuer.province.raw:
-parsed.issuer.organization:
+parsed.issuer.organization: useful
 parsed.issuer.organization.raw:
 parsed.issuer.organizational_unit:
 parsed.issuer.organizational_unit.raw:
-parsed.issuer.country:
+parsed.issuer.country: useful
 parsed.issuer.country.raw:
-parsed.issuer.common_name:
+parsed.issuer.common_name: useful
 parsed.issuer.common_name.raw:
 parsed.issuer.serial_number:
 parsed.issuer.locality:
@@ -61,6 +64,7 @@ parsed.issuer.street_address:
 parsed.issuer.street_address.raw:
 parsed.issuer.postal_code:
 
+subject_key_info - useful
 Public
 Keyparsed.subject_key_info.fingerprint_sha256:
 parsed.subject_key_info.key_algorithm.oid:
@@ -86,7 +90,7 @@ Subject
 Alternate
 Names
 (SANs)parsed.extensions.subject_alt_name.dns_names:
-parsed.extensions.subject_alt_name.ip_addresses:
+parsed.extensions.subject_alt_name.ip_addresses: useful
 parsed.extensions.subject_alt_name.email_addresses:
 parsed.extensions.subject_alt_name.edi_party_names.name_assigner:
 parsed.extensions.subject_alt_name.edi_party_names.party_name:
@@ -99,9 +103,9 @@ parsed.extensions.subject_alt_name.directory_names.serial_number:
 parsed.extensions.subject_alt_name.directory_names.serial_number.raw:
 parsed.extensions.subject_alt_name.directory_names.common_name:
 parsed.extensions.subject_alt_name.directory_names.common_name.raw:
-parsed.extensions.subject_alt_name.directory_names.country:
+parsed.extensions.subject_alt_name.directory_names.country:useful
 parsed.extensions.subject_alt_name.directory_names.country.raw:
-parsed.extensions.subject_alt_name.directory_names.locality:
+parsed.extensions.subject_alt_name.directory_names.locality:useful
 parsed.extensions.subject_alt_name.directory_names.locality.raw:
 parsed.extensions.subject_alt_name.directory_names.province:
 parsed.extensions.subject_alt_name.directory_names.province.raw:
@@ -119,6 +123,7 @@ Basic
 Constaintsparsed.extensions.basic_constraints.max_path_len:
 parsed.extensions.basic_constraints.is_ca:
 
+key_usage: useful
 Key
 Usageparsed.extensions.key_usage.encipher_only:
 parsed.extensions.key_usage.certificate_sign:
@@ -227,10 +232,10 @@ Extensionsparsed.unknown_extensions.critical:
 parsed.unknown_extensions.id:
 parsed.unknown_extensions.value:
 
-Signatureparsed.signature.self_signed:
+Signatureparsed.signature.self_signed:useful
 parsed.signature.value:
 parsed.signature.signature_algorithm.oid:
-parsed.signature.signature_algorithm.name:
+parsed.signature.signature_algorithm.name:useful
 
 Certificate
 Transparency
