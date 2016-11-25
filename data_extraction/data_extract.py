@@ -97,18 +97,34 @@ def getData(dom,cur):
                         else:
                             dns_names = None
                             dns_names_count = 0
-
-                        subject_dn = cert["parsed.subject_dn"][0]
-                        issuer_dn = cert["parsed.issuer_dn"][0]
-                        fingerprint_sha256 = cert["parsed.fingerprint_sha256"][0]
-                        sign_algo_name =  cert["parsed.signature_algorithm.name"][0]
+                        if "parsed.subject_dn" in cert:
+                            subject_dn = cert["parsed.subject_dn"][0]
+                        else:
+                            subject_dn = None
+                        if "parsed.issuer_dn" in cert:
+                            issuer_dn = cert["parsed.issuer_dn"][0]
+                        else:
+                            issuer_dn = None
+                        if "parsed.fingerprint_sha256" in cert:
+                            fingerprint_sha256 = cert["parsed.fingerprint_sha256"][0]
+                        else:
+                            fingerprint_sha256 = None
+                        if "parsed.signature_algorithm.name" in cert:
+                            sign_algo_name =  cert["parsed.signature_algorithm.name"][0]
+                        else:
+                            sign_algo_name = None
                         if "parsed.signature.self_signed" in cert:
                             self_signed = cert["parsed.signature.self_signed"][0]
                         else:
                             self_Signed = None
-                        key_algo = cert["parsed.subject_key_info.key_algorithm.name"][0]
-
-                        val_start = cert["parsed.validity.start"]
+                        if "parsed.subject_key_info.key_algorithm.name" in cert:
+                            key_algo = cert["parsed.subject_key_info.key_algorithm.name"][0]
+                        else:
+                            key_algo = None
+                        if "parsed.validity.start" in cert:
+                            val_start = cert["parsed.validity.start"]
+                        else:
+                            val_start = None
                         if "parsed.validity.length" in cert:
                             val_length = cert["parsed.validity.length"]
                         else:
@@ -121,9 +137,6 @@ def getData(dom,cur):
                             subj_cntry = cert["parsed.subject.country"]
                         else:
                             subj_cntry = None
-                        #subj_cmn_name = cert["parsed.subject.common_name"]
-                        #issuer_cntry = cert["parsed.issuer.country"]
-                        #issuer_cmn_name = cert["parsed.issuer.common_name"]
                         if "parsed.subject_key_info" in cert:
                             subj_key_info = cert["parsed.subject_key_info"]
                         else:
@@ -166,37 +179,39 @@ def getData(dom,cur):
                         else:
                             ip = None
 
-                        issuer_dn_split = issuer_dn.split(",")
                         issuer_c = ""
                         issuer_o = ""
                         issuer_cn = ""
                         issuer_ou = ""
-                        for el in issuer_dn_split:
-                            el = el.strip()
-                            if el[0:2] == "C=":
-                                issuer_c = el[2:]
-                            elif el[0:2] == "O=":
-                                issuer_o =  el[2:]
-                            elif el[0:3] == "CN=":
-                                issuer_cn = el[3:]
-                            elif el[0:3] == "OU=":
-                                issuer_ou = el[3:]
+                        if issuer_dn !=None:
+                            issuer_dn_split = issuer_dn.split(",")
+                            for el in issuer_dn_split:
+                                el = el.strip()
+                                if el[0:2] == "C=":
+                                    issuer_c = el[2:]
+                                elif el[0:2] == "O=":
+                                    issuer_o =  el[2:]
+                                elif el[0:3] == "CN=":
+                                    issuer_cn = el[3:]
+                                elif el[0:3] == "OU=":
+                                    issuer_ou = el[3:]
 
-                        subject_dn_split = subject_dn.split(",")
                         subject_c = ""
                         subject_o = ""
                         subject_cn = ""
                         subject_ou = ""
-                        for el in subject_dn_split:
-                            el = el.strip()
-                            if el[0:2] == "C=":
-                                subject_c = el[2:]
-                            elif el[0:2] == "O=":
-                                subject_o =  el[2:]
-                            elif el[0:3] == "CN=":
-                                subject_cn = el[3:]
-                            elif el[0:3] == "OU=":
-                                subject_ou = el[3:]
+                        if subject_dn != None:
+                            subject_dn_split = subject_dn.split(",")
+                            for el in subject_dn_split:
+                                el = el.strip()
+                                if el[0:2] == "C=":
+                                    subject_c = el[2:]
+                                elif el[0:2] == "O=":
+                                    subject_o =  el[2:]
+                                elif el[0:3] == "CN=":
+                                    subject_cn = el[3:]
+                                elif el[0:3] == "OU=":
+                                    subject_ou = el[3:]
 
                         subject_dn_table = [ fingerprint_sha256, subject_dn, dns_names_count, subject_c, subject_ou, subject_o, subject_cn]
                         cur.execute("INSERT INTO subject_dn VALUES(?, ?, ?, ?, ?, ?, ?)", subject_dn_table)
@@ -208,8 +223,8 @@ def getData(dom,cur):
                             val_length = int(val_length[0])
                         if val_start != None:
                             val_start = str(val_start[0])[:10]
-                        cert_data_table = [fingerprint_sha256, subject_dn, subject_c, subject_o, subject_cn, issuer_c, issuer_o, sign_algo_name, self_signed, key_algo, val_start, val_length, enc_only, cert_sign, key_enc, digi_sign, cont_commit, dec_only, key_agreem, data_enc]
 
+                        cert_data_table = [fingerprint_sha256, subject_dn, subject_c, subject_o, subject_cn, issuer_c, issuer_o, sign_algo_name, self_signed, key_algo, val_start, val_length, enc_only, cert_sign, key_enc, digi_sign, cont_commit, dec_only, key_agreem, data_enc]
                         cur.execute("INSERT INTO cert_data VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", cert_data_table)
 
                         if dns_names is not None:
