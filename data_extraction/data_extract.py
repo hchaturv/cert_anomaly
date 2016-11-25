@@ -210,7 +210,7 @@ def getData(dom,cur):
                             val_start = str(val_start[0])[:10]
                         cert_data_table = [fingerprint_sha256, subject_dn, subject_c, subject_o, subject_cn, issuer_c, issuer_o, sign_algo_name, self_signed, key_algo, val_start, val_length, enc_only, cert_sign, key_enc, digi_sign, cont_commit, dec_only, key_agreem, data_enc]
 
-                        cur.execute("INSERT INTO cert_data VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", cert_data_table)
+                        cur.execute("INSERT INTO cert_data VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", cert_data_table)
 
                         if dns_names is not None:
                             for name in dns_names:
