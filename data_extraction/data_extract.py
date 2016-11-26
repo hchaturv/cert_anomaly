@@ -213,11 +213,11 @@ def getData(dom,cur):
                                 elif el[0:3] == "OU=":
                                     subject_ou = el[3:]
 
-                        subject_dn_table = [ fingerprint_sha256, subject_dn, dns_names_count, subject_c, subject_ou, subject_o, subject_cn]
-                        cur.execute("INSERT INTO subject_dn VALUES(?, ?, ?, ?, ?, ?, ?)", subject_dn_table)
+                        #subject_dn_table = [ fingerprint_sha256, subject_dn, dns_names_count, subject_c, subject_ou, subject_o, subject_cn]
+                        #cur.execute("INSERT INTO subject_dn VALUES(?, ?, ?, ?, ?, ?, ?)", subject_dn_table)
 
-                        issuer_dn_table = [ fingerprint_sha256, issuer_dn, issuer_c, issuer_ou, issuer_o, issuer_cn]
-                        cur.execute("INSERT INTO issuer_dn VALUES(?, ?, ?, ?, ?, ?)", issuer_dn_table)
+                        #issuer_dn_table = [ fingerprint_sha256, issuer_dn, issuer_c, issuer_ou, issuer_o, issuer_cn]
+                        #cur.execute("INSERT INTO issuer_dn VALUES(?, ?, ?, ?, ?, ?)", issuer_dn_table)
 
                         if val_length != None:
                             val_length = int(val_length[0])
@@ -227,11 +227,11 @@ def getData(dom,cur):
                         cert_data_table = [fingerprint_sha256, subject_dn, subject_c, subject_o, subject_cn, issuer_c, issuer_o, sign_algo_name, self_signed, key_algo, val_start, val_length, enc_only, cert_sign, key_enc, digi_sign, cont_commit, dec_only, key_agreem, data_enc]
                         cur.execute("INSERT INTO cert_data VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", cert_data_table)
 
-                        if dns_names is not None:
+                        '''if dns_names is not None:
                             for name in dns_names:
                                 dns_names_table = [ fingerprint_sha256, name ]
                                 cur.execute("INSERT INTO dns_names VALUES(?, ?)", dns_names_table)
-
+                        '''
                 conn.commit()
                 current_page += 1
                 res = None
