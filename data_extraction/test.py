@@ -72,7 +72,7 @@ def getData(dom,cur):
 
             print "3. Got %s results in %s pages." % (metadata_count, metadata_pages)
 
-            while current_page <= 2:#metadata_pages:
+            while current_page <= metadata_pages:
                 #while current_page <= 1:
                 if res is None:
                     data = { 'query': dom, 'page': current_page, 'fields': fields}
@@ -233,11 +233,11 @@ try:
     c.execute('DROP TABLE IF EXISTS cert')
     c.execute("CREATE TABLE cert("+" TEXT, ".join('"'+x+'"' for x in fields)+" TEXT)")
     # print "CREATE TABLE cert("+" TEXT, ".join(x for x in fields)+")"
-    print "1. Database %s created." % SQLDB
+    print "1. Database created." 
     for i in range(len(censys_queries)):
         print "++++++++++++++++++++++++++++++NEW_DOMAIN- %s ++++++++++++++++++++" %censys_queries[i]
         getData(censys_queries[i],c)
-    c.close()
+    # cur.close()
 except Exception as e:
-    c.close()
+    # cur.close()
     raise
