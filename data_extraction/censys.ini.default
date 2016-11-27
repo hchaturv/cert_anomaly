@@ -1,9 +1,0 @@
-[censys]
-url = https://www.censys.io/api/v1
-index = /search/certificates
-uid = <put ur uid here>
-secret = <put your  api key here>
-
-[db]
-db = censys.db
-sql-create = database.sql

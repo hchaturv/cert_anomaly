@@ -99,7 +99,6 @@ try:
     conn.execute('DROP TABLE IF EXISTS cert')
     conn.execute("CREATE TABLE cert(id INTEGER PRIMARY KEY   AUTOINCREMENT, domain TEXT, resultObj TEXT)")
     # print "CREATE TABLE cert("+" TEXT, ".join(x for x in fields)+")"
-    print "1. Database created."
     for i in range(len(censys_queries)):
         print "++++++++++++++++++++++++++++++NEW_DOMAIN- %s ++++++++++++++++++++" %censys_queries[i]
         getData(censys_queries[i],conn)
