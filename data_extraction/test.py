@@ -71,7 +71,7 @@ def getData(dom,cur):
         print "3. Got %s results in %s pages." % (metadata_count, metadata_pages)
 
         # while current_page <= metadata_pages:
-        for i in  trange(metadata_pages):
+        for i in  trange(3):#metadata_pages):
             try:
                 #while current_page <= 1:
                 if res is None:
@@ -84,13 +84,13 @@ def getData(dom,cur):
                     results = res.json()["results"]
                     # print results
                     for cert in results:
-                        # columns = '"'+'", "'.join(cert.keys())+'"'
-                        # cert = {k.replace(".",""): str(v) for k,v in cert.items()}
-                        # placeholders = ':'+', :'.join(cert.keys())
+                        columns = '"'+'", "'.join(cert.keys())+'"'
+                        cert = {k.replace(".",""): str(v) for k,v in cert.items()}
+                        placeholders = ':'+', :'.join(cert.keys())
                         conn.execute('INSERT INTO cert (domain,resultObj) VALUES (?,?)' , (dom, str(cert)))
                 res = None
                 # conn.commit()
-                # time.sleep()
+                time.sleep(0.5)
             except Exception as e:
                 print e
 
@@ -98,7 +98,8 @@ try:
     # Create the database
     # cur.executescript(query)
     conn.execute('DROP TABLE IF EXISTS cert')
-    conn.execute("CREATE TABLE cert(id INTEGER PRIMARY KEY   AUTOINCREMENT, domain TEXT, resultObj TEXT)")
+    conn.execute("CREATE TABLE cert(id INTEGER PRIMARY KEY AUTOINCREMENT, domain TEXT,"+" TEXT, ".join(x.replace(".","") for x in fields)+")")
+    # conn.execute("CREATE TABLE cert(id INTEGER PRIMARY KEY   AUTOINCREMENT, domain TEXT, resultObj TEXT)")
     # print "CREATE TABLE cert("+" TEXT, ".join(x for x in fields)+")"
     print "1. Database created." 
     for i in range(len(censys_queries)):
