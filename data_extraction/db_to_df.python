@@ -1,0 +1,10 @@
+from pandas import DataFrame, read_sql
+import pandas as pd
+import sqlite3
+con = sqlite3.connect("censys.db")
+
+verses_sql = '''SELECT *
+                FROM cert_data
+                '''
+
+df_verses = pd.read_sql(verses_sql, con, index_col='sha256')
