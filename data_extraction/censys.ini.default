@@ -1,8 +1,9 @@
 [censys]
 url = https://www.censys.io/api/v1
 index = /search/certificates
-uid = 61c3a174-bd41-49b1-8d94-19a13188d137
-secret = KzvApnnmrEwJvIaVeTwHhznJRuYPX2wt
+uid = <put ur uid here>
+secret = <put your  api key here>
+
 
 [db]
 db = censys.db
