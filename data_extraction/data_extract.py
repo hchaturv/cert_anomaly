@@ -41,8 +41,8 @@ censys_queries = sys.argv[1:]
 print "0. Starting %s" % strftime("%Y-%m-%d %H:%M:%S", gmtime())
 
 # Remove any old databases
-if os.path.isfile(SQLDB):
-    os.remove(SQLDB)
+# if os.path.isfile(SQLDB):
+    # os.remove(SQLDB)
 #Setup database
 query = open(SQLFILE, 'r').read()
 sqlite3.complete_statement(query)
@@ -76,7 +76,7 @@ def getData(dom,cur):
             print "3. Got %s results in %s pages." % (metadata_count, metadata_pages)
 
             # while current_page <= metadata_pages:
-            for i in trange(metadata_pages):
+            for i in trange(100):
                 try:
                 #while current_page <= 1:
                     if res is None:
@@ -252,7 +252,7 @@ def getData(dom,cur):
 
 try:
     # Create the database
-    cur.executescript(query)
+    # cur.executescript(query)
     print "1. Database %s created." % SQLDB
     for i in range(len(censys_queries)):
         print "++++++++++++++++++++++++++++++NEW_DOMAIN- %s ++++++++++++++++++++" %censys_queries[i]

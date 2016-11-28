@@ -71,7 +71,7 @@ def getData(dom,cur):
         print "3. Got %s results in %s pages." % (metadata_count, metadata_pages)
 
         # while current_page <= metadata_pages:
-        for i in  trange(3):#metadata_pages):
+        for i in  trange(1):#metadata_pages):
             try:
                 #while current_page <= 1:
                 if res is None:
@@ -79,6 +79,7 @@ def getData(dom,cur):
                     data = json.dumps(data)
                     while True:
                         res = requests.post(API_URL + API_INDEX, data=data, auth=(UID,SECRET))
+                        break
                         if res.status_code == 200:
                             break
                         time.sleep(2)
@@ -88,10 +89,14 @@ def getData(dom,cur):
                     results = res.json()["results"]
                     # print results
                     for cert in results:
-                        columns = '"'+'", "'.join(cert.keys())+'"'
                         cert = {k.replace(".",""): str(v) for k,v in cert.items()}
+                        columns = ', '.join(cert.keys())
                         placeholders = ':'+', :'.join(cert.keys())
-                        conn.execute('INSERT INTO cert (domain,resultObj) VALUES (?,?)' , (dom, str(cert)))
+                        query = 'INSERT INTO cert \n(%s) VALUES \n(%s)' % (columns, placeholders)
+                        # print query
+                        conn.execute(query, cert)
+                        # conn.execute(query)
+                        # conn.execute('INSERT INTO cert (domain,resultObj) VALUES (?,?)' , (dom, str(cert)))
                 res = None
                 # conn.commit()
                 time.sleep(0.5)
