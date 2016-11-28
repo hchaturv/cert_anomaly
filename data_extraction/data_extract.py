@@ -86,7 +86,7 @@ def getData(dom,cur):
                             res = requests.post(API_URL + API_INDEX, data=data, auth=(UID,SECRET))
                             if res.status_code == 200:
                                 break
-                            sleep(2)
+                            time.sleep(2)
                             print "error occurred: %s" % res.json()["error"]
                         #print res
 

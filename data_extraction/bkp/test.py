@@ -56,10 +56,7 @@ def getData(dom,cur):
         data = { 'query': dom, 'page': 1, 'fields': fields}
         data = json.dumps(data)
         #print "This is the json i am sending: %s " %data
-        try:
-            res = requests.post(API_URL + API_INDEX, data=data, auth=(UID,SECRET))
-        except Exception, e:
-            print e
+        res = requests.post(API_URL + API_INDEX, data=data, auth=(UID,SECRET))
         #print "Result code is : %s" %res
 
         # Check if we get a good reply
@@ -80,7 +77,12 @@ def getData(dom,cur):
                 if res is None:
                     data = { 'query': dom, 'page': i, 'fields': fields}
                     data = json.dumps(data)
-                    res = requests.post(API_URL + API_INDEX, data=data, auth=(UID,SECRET))
+                    while True:
+                        res = requests.post(API_URL + API_INDEX, data=data, auth=(UID,SECRET))
+                        if res.status_code == 200:
+                            break
+                        time.sleep(2)
+                        print "error occurred: %s" % res.json()["error"]
                     # print res.json()
                 if "results" in res.json():
                     results = res.json()["results"]
