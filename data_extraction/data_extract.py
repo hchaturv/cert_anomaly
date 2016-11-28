@@ -41,8 +41,8 @@ censys_queries = sys.argv[1:]
 print "0. Starting %s" % strftime("%Y-%m-%d %H:%M:%S", gmtime())
 
 # Remove any old databases
-# if os.path.isfile(SQLDB):
-    # os.remove(SQLDB)
+if os.path.isfile(SQLDB):
+    os.remove(SQLDB)
 #Setup database
 query = open(SQLFILE, 'r').read()
 sqlite3.complete_statement(query)
@@ -86,7 +86,7 @@ def getData(dom,cur):
                             res = requests.post(API_URL + API_INDEX, data=data, auth=(UID,SECRET))
                             if res.status_code == 200:
                                 break
-                            time.sleep(2)
+                            time.sleep(10)
                             print "error occurred: %s" % res.json()["error"]
                         #print res
 
@@ -232,7 +232,7 @@ def getData(dom,cur):
                                     val_start = str(val_start[0])[:10]
 
                                 cert_data_table = [fingerprint_sha256, subject_dn, subject_c, subject_o, subject_cn, issuer_c, issuer_o, sign_algo_name, self_signed, key_algo, val_start, val_length, enc_only, cert_sign, key_enc, digi_sign, cont_commit, dec_only, key_agreem, data_enc]
-                                cur.execute("INSERT INTO cert_data VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", cert_data_table)
+                                cur.execute("INSERT INTO "+dom+" VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", cert_data_table)
 
                                 '''if dns_names is not None:
                                     for name in dns_names:
@@ -246,7 +246,7 @@ def getData(dom,cur):
                 # conn.commit()
                 # current_page += 1
                 res = None
-                time.sleep(0.5)
+                time.sleep(2)
 
 
 
@@ -255,6 +255,7 @@ try:
     # cur.executescript(query)
     print "1. Database %s created." % SQLDB
     for i in range(len(censys_queries)):
+        cur.execute("CREATE TABLE "+censys_queries[i]+" (sha256 TEXT, content TEXT, subject_c TEXT, subject_o TEXT, subject_cn TEXT, is$uer_c TEXT, issuer_o TEXT, signing_algorithm TEXT, self_signed BOOL, key_algorithm TEXT, val_start, va$_length INT, enc_only BOOL,cert_sign BOOL, key_enc BOOL, digi_sign BOOL, cont_commit BOOL,dec_only BOO$, key_agreem BOOL, data_enc BOOL)")
         print "++++++++++++++++++++++++++++++NEW_DOMAIN- %s ++++++++++++++++++++" %censys_queries[i]
         getData(censys_queries[i],cur)
     cur.close()
