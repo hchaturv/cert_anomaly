@@ -82,7 +82,12 @@ def getData(dom,cur):
                     if res is None:
                         data = { 'query': dom, 'page': i, 'fields': fields}
                         data = json.dumps(data)
-                        res = requests.post(API_URL + API_INDEX, data=data, auth=(UID,SECRET))
+                        while True:
+                            res = requests.post(API_URL + API_INDEX, data=data, auth=(UID,SECRET))
+                            if res.status_code == 200:
+                                break
+                            sleep(2)
+                            print "error occurred: %s" % res.json()["error"]
                         #print res
 
                     # print "4. Page %s / %s " % (current_page, metadata_pages)

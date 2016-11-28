@@ -56,7 +56,10 @@ def getData(dom,cur):
         data = { 'query': dom, 'page': 1, 'fields': fields}
         data = json.dumps(data)
         #print "This is the json i am sending: %s " %data
-        res = requests.post(API_URL + API_INDEX, data=data, auth=(UID,SECRET))
+        try:
+            res = requests.post(API_URL + API_INDEX, data=data, auth=(UID,SECRET))
+        except Exception, e:
+            print e
         #print "Result code is : %s" %res
 
         # Check if we get a good reply
@@ -106,4 +109,4 @@ try:
     conn.close()
 except Exception as e:
     conn.close()
-    raise
+    pass
