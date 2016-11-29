@@ -255,7 +255,7 @@ try:
     # cur.executescript(query)
     print "1. Database %s created." % SQLDB
     for i in range(len(censys_queries)):
-        cur.execute("CREATE TABLE "+censys_queries[i]+" (sha256 TEXT, content TEXT, subject_c TEXT, subject_o TEXT, subject_cn TEXT, is$uer_c TEXT, issuer_o TEXT, signing_algorithm TEXT, self_signed BOOL, key_algorithm TEXT, val_start, va$_length INT, enc_only BOOL,cert_sign BOOL, key_enc BOOL, digi_sign BOOL, cont_commit BOOL,dec_only BOO$, key_agreem BOOL, data_enc BOOL)")
+        cur.execute("CREATE TABLE "+censys_queries[i]+" (sha256 TEXT, content TEXT, subject_c TEXT, subject_o TEXT, subject_cn TEXT, issuer_c TEXT, issuer_o TEXT, signing_algorithm TEXT, self_signed BOOL, key_algorithm TEXT, val_start, val_length INT, enc_only BOOL,cert_sign BOOL, key_enc BOOL, digi_sign BOOL, cont_commit BOOL,dec_only BOOL, key_agreem BOOL, data_enc BOOL)")
         print "++++++++++++++++++++++++++++++NEW_DOMAIN- %s ++++++++++++++++++++" %censys_queries[i]
         getData(censys_queries[i],cur)
     cur.close()
