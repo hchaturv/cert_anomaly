@@ -108,6 +108,10 @@ def getData(dom,cur):
                                     subject_dn = cert["parsed.subject_dn"][0]
                                 else:
                                     subject_dn = None
+                                if "parsed.extensions.subject_alt_name.directory_names.country" in cert:
+                                    cntry = cert["parsed.extensions.subject_alt_name.directory_names.country"][0]
+                                else:
+                                    cnrty = None
                                 if "parsed.issuer_dn" in cert:
                                     issuer_dn = cert["parsed.issuer_dn"][0]
                                 else:
@@ -128,26 +132,10 @@ def getData(dom,cur):
                                     key_algo = cert["parsed.subject_key_info.key_algorithm.name"][0]
                                 else:
                                     key_algo = None
-                                if "parsed.validity.start" in cert:
-                                    val_start = cert["parsed.validity.start"]
-                                else:
-                                    val_start = None
                                 if "parsed.validity.length" in cert:
                                     val_length = cert["parsed.validity.length"]
                                 else:
                                     val_length = None
-                                if "parsed.subject.organization" in cert:
-                                    subj_org = cert["parsed.subject.organization"]
-                                else:
-                                    subj_org = None
-                                if "parsed.subject.country" in cert:
-                                    subj_cntry = cert["parsed.subject.country"]
-                                else:
-                                    subj_cntry = None
-                                if "parsed.subject_key_info" in cert:
-                                    subj_key_info = cert["parsed.subject_key_info"]
-                                else:
-                                    subj_key_info = None
                                 if "parsed.extensions.key_usage.encipher_only" in cert:
                                     enc_only = cert["parsed.extensions.key_usage.encipher_only"][0]
                                 else:
@@ -164,7 +152,7 @@ def getData(dom,cur):
                                     digi_sign = cert["parsed.extensions.key_usage.digital_signature"][0]
                                 else:
                                     digi_sign = False
-                                if "parsed.extensions.key_usage.content_commitmenti" in cert:
+                                if "parsed.extensions.key_usage.content_commitment" in cert:
                                     cont_commit = cert["parsed.extensions.key_usage.content_commitmenti"][0]
                                 else:
                                     cont_commit = False
@@ -180,11 +168,6 @@ def getData(dom,cur):
                                     data_enc = cert["parsed.extensions.key_usage.data_encipherment"][0]
                                 else:
                                     data_enc = False
-
-                                if "parsed.extensions.subject_alt_name.ip_addresses" in cert:
-                                    ip = cert["parsed.extensions.subject_alt_name.ip_addresses"]
-                                else:
-                                    ip = None
 
                                 issuer_c = ""
                                 issuer_o = ""
@@ -228,16 +211,16 @@ def getData(dom,cur):
 
                                 if val_length != None:
                                     val_length = int(val_length[0])
-                                if val_start != None:
-                                    val_start = str(val_start[0])[:10]
+                                '''if val_start != None:
+                                    val_start = str(val_start[0])[:10]'''
 
-                                cert_data_table = [fingerprint_sha256, subject_dn, subject_c, subject_o, subject_cn, issuer_c, issuer_o, sign_algo_name, self_signed, key_algo, val_start, val_length, enc_only, cert_sign, key_enc, digi_sign, cont_commit, dec_only, key_agreem, data_enc]
-                                cur.execute("INSERT INTO "+dom+" VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", cert_data_table)
+                                cert_data_table = [fingerprint_sha256, subject_cn, issuer_cn, sign_algo_name, self_signed, key_algo, val_length, enc_only, cert_sign, key_enc, digi_sign, cont_commit, dec_only, key_agreem, data_enc]
+                                cur.execute("INSERT INTO "+dom+" VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", cert_data_table)
 
                                 '''if dns_names is not None:
                                     for name in dns_names:
                                         dns_names_table = [ fingerprint_sha256, name ]
-                                        cur.execute("INSERT INTO dns_names VALUES(?, ?)", dns_names_table)
+                                        cur.execute(INSERT INTO dns_names VALUES(?, ?), dns_names_table)
                                 '''
                             except Exception as e:
                                 print e, cert

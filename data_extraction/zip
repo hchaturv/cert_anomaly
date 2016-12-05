@@ -1,0 +1,64 @@
+SELECT parsed.fingerprint_sha256,
+parsed.extensions.subject_alt_name.dns_names,
+parsed.issuer_dn,
+parsed.subject_dn,
+parsed.signature_algorithm.name,
+parsed.signature.self_signed,
+parsed.subject_key_info.key_algorithm.name,
+parsed.validity.start,parsed.validity.length,
+parsed.extensions.key_usage.encipher_only,
+FROM certificates.certificates
+WHERE parsed_extensions_subject_alt_name_dns_names LIKE '*.zip'
+ORDER BY parsed.fingerprint_sha256
+LIMIT 20000;
+
+
+SELECT parsed.fingerprint_sha256,
+parsed.extensions.subject_alt_name.directory_names.country,
+parsed.extensions.key_usage.certificate_sign,
+FROM certificates.certificates
+WHERE parsed.subject_dn LIKE '*.zip'
+ORDER BY parsed.fingerprint_sha256
+LIMIT 20000;
+
+SELECT parsed.fingerprint_sha256,
+parsed.extensions.key_usage.key_encipherment,
+FROM certificates.certificates
+WHERE parsed.subject_dn LIKE '*.zip'
+ORDER BY parsed.fingerprint_sha256
+LIMIT 20000;
+
+SELECT parsed.fingerprint_sha256,
+parsed.extensions.key_usage.digital_signature,
+FROM certificates.certificates
+WHERE parsed.subject_dn LIKE '*.zip'
+ORDER BY parsed.fingerprint_sha256
+LIMIT 20000;
+
+SELECT parsed.fingerprint_sha256,
+parsed.extensions.key_usage.content_commitment,
+FROM certificates.certificates
+WHERE parsed.subject_dn LIKE '*.zip'
+ORDER BY parsed.fingerprint_sha256
+LIMIT 20000;
+
+SELECT parsed.fingerprint_sha256,
+parsed.extensions.key_usage.decipher_only,
+FROM certificates.certificates
+WHERE parsed.subject_dn LIKE '*.zip'
+ORDER BY parsed.fingerprint_sha256
+LIMIT 20000;
+
+SELECT parsed.fingerprint_sha256,
+parsed.extensions.key_usage.key_agreement,
+FROM certificates.certificates
+WHERE parsed.subject_dn LIKE '*.zip'
+ORDER BY parsed.fingerprint_sha256
+LIMIT 20000;
+
+SELECT parsed.fingerprint_sha256,
+parsed.extensions.key_usage.data_encipherment,
+FROM certificates.certificates
+WHERE parsed.subject_dn LIKE '*.zip'
+ORDER BY parsed.fingerprint_sha256
+LIMIT 20000;
